@@ -14,42 +14,30 @@
   />
 </svelte:head>
 
-<main class="page">
-  <section class="shell" aria-labelledby="page-title">
-    <div class="eyebrow">Novu Svelte example</div>
-    <h1 id="page-title">Novu Svelte Inbox</h1>
-    <p class="intro">Custom notification center example</p>
-
-    <section class="demo-card" aria-label="Novu Inbox example">
-      <header class="demo-header">
-        <div>
-          <h2>Notifications in your app</h2>
-          <p>Open the notification button to view your latest notifications.</p>
-        </div>
-
-        {#if applicationIdentifier && subscriber}
-          <NovuInbox
-            applicationIdentifier={applicationIdentifier}
-            subscriber={subscriber}
-          />
-        {:else}
-          <div class="missing-config" role="alert">
-            Set the Novu environment variables to enable the Inbox.
-          </div>
-        {/if}
+{#if !applicationIdentifier || !subscriber}
+  <main class="page missing-page">
+    <div class="center-container" role="alert">
+      <h2>Missing Novu configuration</h2>
+      <p>
+        Please set PUBLIC_NOVU_APPLICATION_IDENTIFIER and PUBLIC_NOVU_SUBSCRIBER_ID in your .env
+        file
+      </p>
+    </div>
+  </main>
+{:else}
+  <main class="page">
+    <section class="container" aria-labelledby="page-title">
+      <header class="header">
+        <h1 id="page-title">Novu Svelte Inbox</h1>
+        <p>Custom notification center example</p>
       </header>
 
-      <div class="demo-body">
-        <p class="section-label">Inbox example</p>
-        <h2>Stay up to date with your notifications</h2>
-        <p>
-          Svelte owns the component lifecycle while Novu handles notification data, real-time
-          updates, and the Inbox interface.
-        </p>
-      </div>
+      <section class="content" aria-label="Notifications">
+        <NovuInbox applicationIdentifier={applicationIdentifier} subscriber={subscriber} />
+      </section>
     </section>
-  </section>
-</main>
+  </main>
+{/if}
 
 <style>
   :global(*) {
@@ -58,6 +46,8 @@
 
   :global(body) {
     margin: 0;
+    min-width: 20rem;
+    min-height: 100vh;
     color: #111827;
     background: #f5f5f5;
     font-family:
@@ -66,21 +56,21 @@
 
   .page {
     min-height: 100vh;
-    padding: 4rem 1.5rem;
   }
 
-  .shell {
+  .missing-page {
+    display: grid;
+    padding: 1.25rem;
+    place-items: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     width: min(100%, 50rem);
     margin: 0 auto;
-  }
-
-  .eyebrow,
-  .section-label {
-    color: #6366f1;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    background: #ffffff;
   }
 
   h1,
@@ -89,85 +79,54 @@
     margin: 0;
   }
 
-  h1 {
-    margin-top: 0.75rem;
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    line-height: 0.95;
-    letter-spacing: -0.06em;
-  }
-
-  .intro {
-    margin-top: 1.25rem;
-    color: #6b7280;
-    font-size: 1.1rem;
-  }
-
-  .demo-card {
-    margin-top: 3rem;
-    overflow: hidden;
-    border: 1px solid #e5e7eb;
-    border-radius: 1.25rem;
-    background: #ffffff;
-    box-shadow: 0 1.5rem 4rem rgb(17 24 39 / 10%);
-  }
-
-  .demo-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    color: #ffffff;
+  .header {
+    padding: 3.75rem 1.25rem 1.25rem;
+    border-bottom-right-radius: 1.25rem;
+    border-bottom-left-radius: 1.25rem;
     background: #6366f1;
   }
 
-  .demo-header h2 {
-    font-size: 1.25rem;
+  .header h1 {
+    color: #ffffff;
+    font-size: 1.75rem;
+    line-height: 1.2;
   }
 
-  .demo-header p {
-    margin-top: 0.35rem;
+  .header p {
+    margin-top: 0.25rem;
     color: #e0e7ff;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    line-height: 1.2;
   }
 
-  .missing-config {
-    max-width: 14rem;
-    padding: 0.65rem 0.8rem;
-    border: 1px solid rgb(255 255 255 / 35%);
-    border-radius: 0.6rem;
-    color: #eef2ff;
-    font-size: 0.8rem;
-    line-height: 1.4;
+  .content {
+    display: grid;
+    flex: 1;
+    min-height: 0;
+    padding: 1.25rem;
+    place-items: center;
   }
 
-  .demo-body {
-    padding: 3rem 1.5rem 3.5rem;
-    background: linear-gradient(135deg, #eef2ff, #ffffff 60%);
+  .center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1.25rem;
+    text-align: center;
   }
 
-  .demo-body h2 {
-    max-width: 28rem;
-    margin-top: 0.75rem;
-    font-size: clamp(1.75rem, 5vw, 3rem);
-    letter-spacing: -0.04em;
+  .center-container h2 {
+    margin-bottom: 0.5rem;
+    color: #ef4444;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.2;
   }
 
-  .demo-body p:last-child {
-    max-width: 35rem;
-    margin-top: 1rem;
-    color: #4b5563;
-    line-height: 1.7;
-  }
-
-  @media (max-width: 38rem) {
-    .page {
-      padding: 2.5rem 1rem;
-    }
-
-    .demo-header {
-      align-items: flex-start;
-      flex-direction: column;
-    }
+  .center-container p {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.2;
   }
 </style>
