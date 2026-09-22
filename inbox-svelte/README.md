@@ -1,6 +1,6 @@
 # Novu Svelte Inbox example
 
-This example shows how to embed the Novu Inbox in a SvelteKit app with `@novu/js`.
+This example shows how to use `@novu/js` in a SvelteKit app to render a custom notification list.
 
 ## Setup
 
@@ -16,7 +16,8 @@ This example shows how to embed the Novu Inbox in a SvelteKit app with `@novu/js
    cp .env.example .env
    ```
 
-3. Set `PUBLIC_NOVU_APPLICATION_IDENTIFIER` and `PUBLIC_NOVU_SUBSCRIBER_ID` in `.env`.
+3. Set `PUBLIC_NOVU_APPLICATION_IDENTIFIER` and `PUBLIC_NOVU_SUBSCRIBER_ID` in `.env`. For a
+   self-hosted Novu instance, also set `PUBLIC_NOVU_API_URL` and `PUBLIC_NOVU_SOCKET_URL`.
 
 4. Start the development server.
 
@@ -24,14 +25,15 @@ This example shows how to embed the Novu Inbox in a SvelteKit app with `@novu/js
    npm run dev
    ```
 
-5. Open the local URL shown by Vite. Select the notification button to open the Inbox.
+5. Open the local URL shown by Vite. The page displays the notification list.
 
 ## What this example shows
 
-- It loads `@novu/js` and `@novu/js/ui` in `onMount` so the browser-only UI does not run during SSR.
-- It creates a `Novu` client and a `NovuUI` renderer with the shared application and subscriber options.
-- It mounts the `Inbox` component into a Svelte element and unmounts it with the component lifecycle.
-- It leaves notification data and real-time updates to Novu.
+- It loads `@novu/js` in `onMount` so the browser-only client does not run during SSR.
+- It creates a `Novu` client with the application and subscriber options.
+- It fetches notifications with `novu.notifications.list`.
+- It renders loading, error, empty, and populated states.
+- It updates the list when Novu emits `notifications.list.updated`.
 
 ## Commands
 
@@ -41,4 +43,3 @@ npm run check
 npm run build
 npm run preview
 ```
-

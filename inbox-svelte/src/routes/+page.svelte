@@ -4,13 +4,15 @@
 
   const applicationIdentifier = env.PUBLIC_NOVU_APPLICATION_IDENTIFIER;
   const subscriber = env.PUBLIC_NOVU_SUBSCRIBER_ID;
+  const apiUrl = env.PUBLIC_NOVU_API_URL;
+  const socketUrl = env.PUBLIC_NOVU_SOCKET_URL;
 </script>
 
 <svelte:head>
   <title>Novu Svelte Inbox</title>
   <meta
     name="description"
-    content="A Svelte example that embeds the Novu Inbox with @novu/js."
+    content="A Svelte example that renders a custom notification list with @novu/js."
   />
 </svelte:head>
 
@@ -33,7 +35,12 @@
       </header>
 
       <section class="content" aria-label="Notifications">
-        <NovuInbox applicationIdentifier={applicationIdentifier} subscriber={subscriber} />
+        <NovuInbox
+          applicationIdentifier={applicationIdentifier}
+          subscriber={subscriber}
+          apiUrl={apiUrl}
+          socketUrl={socketUrl}
+        />
       </section>
     </section>
   </main>
@@ -80,31 +87,28 @@
   }
 
   .header {
-    padding: 3.75rem 1.25rem 1.25rem;
-    border-bottom-right-radius: 1.25rem;
-    border-bottom-left-radius: 1.25rem;
+    padding: 60px 20px 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
     background: #6366f1;
   }
 
   .header h1 {
     color: #ffffff;
-    font-size: 1.75rem;
-    line-height: 1.2;
+    font-size: 28px;
+    font-weight: 700;
   }
 
   .header p {
-    margin-top: 0.25rem;
+    margin-top: 4px;
     color: #e0e7ff;
-    font-size: 0.875rem;
-    line-height: 1.2;
+    font-size: 14px;
   }
 
   .content {
-    display: grid;
+    display: flex;
     flex: 1;
     min-height: 0;
-    padding: 1.25rem;
-    place-items: center;
   }
 
   .center-container {
